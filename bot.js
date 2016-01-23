@@ -1,23 +1,31 @@
 var readline = require('readline');
 var util = require('./util');
 
-var Bot = function () {
+var bot = {
+    options: {},
+    game: {},
 
-    if (false === (this instanceof Bot)) {
-        return new Bot();
-    }
-
-    // initialize options object
-    this.options = {};
-
-    this.game = {};
+    command_action: command_action,
+    command_settings: command_settings,
+    command_update: command_update,
+    run: run
 }
+module.exports = bot;
+
+/**
+ * Respond to action command
+ * @param Array data
+ */
+function command_action(data) {
+    var num = util.randomInt(0, 6);
+    return 'place_disc ' + num;
+};
 
 /**
  * Respond to settings command
  * @param Array data
  */
-Bot.prototype.settings = function (data) {
+function command_settings(data) {
     var key = data[0],
         value = data[1];
 
@@ -29,7 +37,7 @@ Bot.prototype.settings = function (data) {
  * Respond to update command
  * @param Array data
  */
-Bot.prototype.update = function (data) {
+function command_update(data) {
     if (data[0] === 'game' && data[1] === 'round') {
         this.game.round = data[2];
     }
@@ -45,19 +53,9 @@ function parseField(fieldString) {
         field[i] = field[i].split(',');
     }
     return field;
-}
-
-/**
- * Respond to action command
- * @param Array data
- */
-Bot.prototype.action = function (data) {
-    var num = util.randomInt(0, 6);
-    return 'place_disc ' + num;
 };
 
-Bot.prototype.run = function () {
-
+function run () {
     var io = readline.createInterface(process.stdin, process.stdout);
 
     io.on('line', function (data) {
@@ -89,8 +87,9 @@ Bot.prototype.run = function () {
 
             // invoke command if function exists and pass the data along
             // then return response if exists
-            if (command in bot) {
-                response = bot[command](lineParts);
+
+            if ('command_' + command in bot) {
+                response = bot['command_' + command](lineParts);
 
                 if (response && 0 < response.length) {
                     process.stdout.write(response + '\n');
@@ -105,10 +104,3 @@ Bot.prototype.run = function () {
         process.exit(0);
     });
 };
-
-/**
- * Initialize bot
- * __main__
- */
-bot = new Bot();
-bot.run();

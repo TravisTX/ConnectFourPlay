@@ -1,0 +1,23 @@
+{
+  "name": "ConnectFourPlay",
+  "version": "1.0.0",
+  "description": "ConnectFourPlay",
+  "main": "bot.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TravisTX/ConnectFourPlay.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TravisTX/ConnectFourPlay/issues"
+  },
+  "homepage": "https://github.com/TravisTX/ConnectFourPlay",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  }
+}
