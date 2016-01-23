@@ -34,11 +34,18 @@ Bot.prototype.update = function (data) {
         this.game.round = data[2];
     }
     if (data[0] === 'game' && data[1] === 'field') {
-        // update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;1,0,0,0,0,0,1
-        // todo: split
-        this.game.field = data[2];
+        this.game.field = parseField(data[2]);
+        util.logField(this.game.field);
     }
 };
+
+function parseField(fieldString) {
+    var field = fieldString.split(';');
+    for (var i = 0; i < field.length; i++) {
+        field[i] = field[i].split(',');
+    }
+    return field;
+}
 
 /**
  * Respond to action command
@@ -46,7 +53,7 @@ Bot.prototype.update = function (data) {
  */
 Bot.prototype.action = function (data) {
     var num = util.randomInt(0, 6);
-    process.stdout.write('place_disc ' + num + '\n');
+    return 'place_disc ' + num;
 };
 
 Bot.prototype.run = function () {
@@ -77,7 +84,7 @@ Bot.prototype.run = function () {
                 return;
             }
 
-            // get the input command and convert to camel case
+            // get the input command
             command = lineParts.shift();
 
             // invoke command if function exists and pass the data along
@@ -89,7 +96,7 @@ Bot.prototype.run = function () {
                     process.stdout.write(response + '\n');
                 }
             } else {
-                process.stderr.write('Unable to execute command: ' + command + ', with data: ' + lineParts + '\n');
+                util.log('Unable to execute command: ' + command + ', with data: ' + lineParts + '\n');
             }
         }
     });
