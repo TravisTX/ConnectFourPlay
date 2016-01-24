@@ -1,5 +1,6 @@
 var readline = require('readline');
 var util = require('./util');
+var ai = require('./ai');
 
 var bot = {
     options: {},
@@ -17,7 +18,7 @@ module.exports = bot;
  * @param Array data
  */
 function command_action(data) {
-    var num = util.randomInt(0, 6);
+    var num = ai.decide();
     return 'place_disc ' + num;
 };
 
@@ -51,6 +52,9 @@ function parseField(fieldString) {
     var field = fieldString.split(';');
     for (var i = 0; i < field.length; i++) {
         field[i] = field[i].split(',');
+        field[i] = field[i].map(function(item) {
+            return parseInt(item);
+        });
     }
     return field;
 };

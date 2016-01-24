@@ -28,8 +28,8 @@ describe('bot', function () {
             bot.command_update(['game', 'field', '0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,2,0;0,1,0,0,0,1,0;2,1,0,2,1,1,0;2,1,2,1,2,2,0']);
             expect(bot.game.field.length).to.equal(6);
             expect(bot.game.field[0].length).to.equal(7);
-            expect(bot.game.field[5][6]).to.equal('0');
-            expect(bot.game.field[5][5]).to.equal('2');
+            expect(bot.game.field[5][6]).to.equal(0);
+            expect(bot.game.field[5][5]).to.equal(2);
             done();
         });
     });
