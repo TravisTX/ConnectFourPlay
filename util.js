@@ -15,14 +15,14 @@ util.logField = function(field) {
         process.stderr.write(' │ ');
         for (var col = 0; col < field[row].length; col++) {
             var char = field[row][col];
-            if (char === '0') {
+            if (char === 0) {
                 char = ' ';
             }
-            if (char === '1') {
-                char = '①';
+            if (char === 1) {
+                char = '1';
             }
-            if (char === '2') {
-                char = '❷';
+            if (char === 2) {
+                char = '2';
             }
             process.stderr.write(char + ' │ ');
         }
