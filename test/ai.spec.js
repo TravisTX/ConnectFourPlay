@@ -60,74 +60,58 @@ describe('ai', function() {
         });
     });
 
-    describe('simulateMoveRecursive', function() {
-        it('should not mess with the original field', function(done) {
-            field = [
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-            ];
-            var result = ai.simulateMoveRecursive(field, 5, 1, 0);
-            expect(field[5][5]).to.equal(0);
-            done();
-        });
-
-        it('should find simulated win', function(done) {
-            field = [
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 1, 0],
-                [0, 0, 0, 0, 0, 1, 0],
-                [0, 0, 0, 0, 0, 1, 0],
-            ];
-            var result = ai.simulateMoveRecursive(field, 5, 1, 0);
-            expect(result).to.equal(1);
-            done();
-        });
-
-        it('should find simulated win for player 2', function(done) {
-            field = [
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 2, 1, 0],
-                [0, 0, 0, 2, 1, 2, 0],
-                [0, 0, 2, 1, 1, 1, 0],
-            ];
-            var result = ai.simulateMoveRecursive(field, 5, 2, 0);
-            expect(result).to.equal(2);
-            done();
-        });
-
-        it('should return undefined if no win was found', function(done) {
-            field = [
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 2, 1, 0],
-                [0, 0, 0, 2, 1, 2, 0],
-                [0, 0, 2, 1, 1, 1, 0],
-            ];
-            var result = ai.simulateMoveRecursive(field, 1, 1, 0);
-            expect(result).to.equal(undefined);
-            done();
-        });
-
-        it.only('should find deep simulated win', function(done) {
+    describe('chooseColumn', function() {
+        it('should select a column that blocks the opponent', function(done) {
             field = [
                 [0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 1, 0, 0, 0],
                 [0, 0, 0, 2, 0, 0, 0],
-                [0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 0],
                 [0, 0, 2, 2, 0, 0, 0],
             ];
-            var result = ai.simulateMoveRecursive(field, 3, 1, 5);
-            expect(result).to.equal(1);
+            var result = ai.chooseColumn(field, 1);
+            expect(result).to.equal(4);
+            done();
+        });
+        it('should choose center column at start of game', function(done) {
+            field = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+            ];
+            var result = ai.chooseColumn(field, 1);
+            expect(result).to.equal(3);
+            done();
+        });
+        it('should behave at end of game', function(done) {
+            field = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [2, 1, 2, 1, 2, 1, 2],
+                [1, 2, 1, 2, 1, 2, 1],
+                [1, 2, 1, 2, 1, 2, 1],
+                [2, 1, 2, 1, 2, 1, 2],
+                [1, 2, 1, 2, 1, 2, 1],
+            ];
+            var result = ai.chooseColumn(field, 1);
+            expect(result).to.equal(3);
+            done();
+        });
+
+        it('should find the win', function(done) {
+            field = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 2, 0, 0, 0],
+                [0, 0, 1, 2, 0, 0, 0],
+                [0, 0, 2, 1, 2, 0, 0],
+                [0, 1, 1, 1, 2, 0, 2]
+            ];
+            var result = ai.decide(field, 1);
+            expect(result).to.equal(0);
             done();
         });
     });

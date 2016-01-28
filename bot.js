@@ -18,7 +18,8 @@ module.exports = bot;
  * @param Array data
  */
 function command_action(data) {
-    var num = ai.decide();
+    var selfPlayerNumber = parseInt(this.options.your_botid);
+    var num = ai.decide(this.game.field, selfPlayerNumber);
     return 'place_disc ' + num;
 };
 
@@ -44,7 +45,6 @@ function command_update(data) {
     }
     if (data[0] === 'game' && data[1] === 'field') {
         this.game.field = parseField(data[2]);
-        util.logField(this.game.field);
     }
 };
 
